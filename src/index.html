@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Game Framework</title>
+
+    <style>
+      [gf-dialog], [gf-dialog] * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      [gf-dialog] {
+        position: fixed;
+        width: 600px;
+        height: 200px;
+        font-size: 18pt;
+        top: 5em;
+        left: 50%; margin-left: -300px;
+        border: 1px solid #333;
+        padding: 1ex;
+        transition: 0.35s 5s opacity;
+      }
+      [gf-dialog="exiting"] {
+        opacity: 0;
+      }
+      [gf-dialog] h1 { font-size: 3em; }
+      [gf-dialog] h2 { font-size: 1em; }
+    </style>
+    <script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+  </head>
+  <body>
+    <div gf-dialog="">
+      <h1>Game Framework</h1>
+      <h2>by Douglas Meyer</h2>
+      <p>
+        If you seriously mess-up, go to <a href="/reset.html">/reset.html</a> to start over.
+      </p>
+    </div>
+
+    <script>
+      // Game framework dialog.
+      var dialog = document.querySelector('[gf-dialog]');
+      dialog.addEventListener("transitionend", function(e){
+        dialog.remove();
+      }, false);
+      setTimeout(function(){
+        dialog.setAttribute('gf-dialog', 'exiting');
+      });
+
+      // Game launching.
+      var boot = localStorage.getItem('boot');
+      if (boot){
+        try {
+          (new Function(boot))();
+        } catch(e) {
+          console.log(boot);
+          console.error(e.message);
+          console.error(e.stack);
+        }
+      } else {
+        window.location = '/reset.html';
+      }
+    </script>
+  </body>
+</html>

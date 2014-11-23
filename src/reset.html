@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Game Framework - reset</title>
+  </head>
+  <body>
+    <script type="text">
+      window.game = {
+        loadScript: function loadScript(src){
+          var script = document.createElement('script'),
+              deferred = Promise.defer();
+          document.body.appendChild(script);
+          script.src = src;
+          script.addEventListener('load',  function(e){ deferred.resolve(e); }, false);
+          script.addEventListener('error', function(e){ deferred.reject(e);  }, false);
+          return deferred.promise;
+        }
+      };
+      game.loadScript('//game_framework.dev/default/index.js');
+    </script>
+    <script>
+      var script = document.querySelector('script');
+      localStorage.setItem('boot', script.innerHTML);
+      window.location = '/';
+    </script>
+  </body>
+</html>
